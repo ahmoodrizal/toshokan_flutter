@@ -6,7 +6,13 @@ class XFormField extends StatelessWidget {
   final TextInputType type;
   final TextEditingController controller;
   final bool obsecure;
-  const XFormField({super.key, required this.title, required this.type, required this.controller, required this.obsecure});
+  const XFormField({
+    super.key,
+    required this.title,
+    required this.type,
+    required this.controller,
+    this.obsecure = false,
+  });
 
   @override
   Widget build(BuildContext context) {
