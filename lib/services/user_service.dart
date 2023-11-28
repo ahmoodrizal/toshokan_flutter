@@ -74,4 +74,37 @@ class UserService {
       return left(FetchFailure(e.toString()));
     }
   }
+
+  static Future<Either<Failure, Map>> updateProfile({
+    required String name,
+    required String email,
+    required String phoneNumber,
+    required String city,
+    required String address,
+    required String affilation,
+  }) async {
+    Uri url = Uri.parse(AppConstants.updateProfileUrl);
+    final token = await AppSession.getBearerToken();
+    try {
+      final response = await http.post(
+        url,
+        headers: AppRequest.header(token),
+        body: {
+          'name': name,
+          'email': email,
+          'city': city,
+          'address': address,
+          'affilation': affilation,
+          'phone_number': phoneNumber,
+        },
+      );
+      final data = AppResponse.data(response);
+      return Right(data);
+    } catch (e) {
+      if (e is Failure) {
+        return left(e);
+      }
+      return left(FetchFailure(e.toString()));
+    }
+  }
 }
