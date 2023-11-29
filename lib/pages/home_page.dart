@@ -72,71 +72,75 @@ class _HomePageState extends ConsumerState<HomePage> {
           children: [
             header(context),
             vider(),
-            Consumer(builder: (_, wiRef, __) {
-              List<BookModel> popularBooks = wiRef.watch(popularBooksListProvider);
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-                    child: Row(
-                      children: [
-                        Text(
-                          'Popular Books',
-                          style: AppFonts.darkTextStyle.copyWith(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  if (popularBooks.isEmpty)
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
-                      child: Center(
-                          child: Text(
-                        'Popular Books Data Not Found',
-                        style: AppFonts.darkTextStyle.copyWith(fontSize: 16),
-                      )),
-                    ),
-                  if (popularBooks.isNotEmpty)
-                    SizedBox(
-                      height: 220,
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: popularBooks.length,
-                        itemBuilder: (context, index) {
-                          BookModel popularItem = popularBooks[index];
-                          return GestureDetector(
-                            onTap: () => Navo.push(context, BookDetail(book: popularItem)),
-                            child: Container(
-                              margin: EdgeInsets.fromLTRB(
-                                index == 0 ? 30 : 20,
-                                0,
-                                index == popularBooks.length - 1 ? 30 : 10,
-                                0,
-                              ),
-                              width: 150,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(8),
-                                image: DecorationImage(
-                                  image: NetworkImage('${AppConstants.hostImage}/books/${popularItem.cover}'),
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                    )
-                ],
-              );
-            }),
+            popularBooks(),
           ],
         ),
       ),
     );
+  }
+
+  Consumer popularBooks() {
+    return Consumer(builder: (_, wiRef, __) {
+      List<BookModel> popularBooks = wiRef.watch(popularBooksListProvider);
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+            child: Row(
+              children: [
+                Text(
+                  'Popular Books',
+                  style: AppFonts.darkTextStyle.copyWith(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                  ),
+                )
+              ],
+            ),
+          ),
+          if (popularBooks.isEmpty)
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
+              child: Center(
+                  child: Text(
+                'Popular Books Data Not Found',
+                style: AppFonts.darkTextStyle.copyWith(fontSize: 16),
+              )),
+            ),
+          if (popularBooks.isNotEmpty)
+            SizedBox(
+              height: 220,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: popularBooks.length,
+                itemBuilder: (context, index) {
+                  BookModel popularItem = popularBooks[index];
+                  return GestureDetector(
+                    onTap: () => Navo.push(context, BookDetail(book: popularItem)),
+                    child: Container(
+                      margin: EdgeInsets.fromLTRB(
+                        index == 0 ? 30 : 20,
+                        0,
+                        index == popularBooks.length - 1 ? 30 : 10,
+                        0,
+                      ),
+                      width: 150,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        image: DecorationImage(
+                          image: NetworkImage('${AppConstants.hostImage}/books/${popularItem.cover}'),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            )
+        ],
+      );
+    });
   }
 
   Padding vider() {

@@ -6,6 +6,7 @@ import 'package:toshokan/config/app_style.dart';
 import 'package:toshokan/models/user_model.dart';
 import 'package:toshokan/pages/auth/login_page.dart';
 import 'package:toshokan/pages/loading_page.dart';
+import 'package:toshokan/pages/transaction/user_transactions_page.dart';
 import 'package:toshokan/pages/user/update_profile_page.dart';
 import 'package:toshokan/services/user_service.dart';
 import 'package:toshokan/widgets/info_line.dart';
@@ -69,7 +70,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       InfoLine(title: 'Affilation', value: user.affilation ?? 'Not Set'),
                       const Gap(30),
                       ListTile(
-                        onTap: () {},
+                        onTap: () => Navo.push(context, const UserTransactionPage()),
                         contentPadding: const EdgeInsets.symmetric(horizontal: -30),
                         dense: false,
                         horizontalTitleGap: 0,

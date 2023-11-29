@@ -8,7 +8,6 @@ class TransactionModel {
   int? fine;
   DateTime? returnDate;
   String? note;
-  DateTime? deletedAt;
   DateTime? createdAt;
   DateTime? updatedAt;
 
@@ -22,7 +21,6 @@ class TransactionModel {
       this.fine,
       this.returnDate,
       this.note,
-      this.deletedAt,
       this.createdAt,
       this.updatedAt});
 
@@ -36,7 +34,6 @@ class TransactionModel {
     fine = json['fine'];
     returnDate = DateTime.parse(json['return_date']).toLocal();
     note = json['note'];
-    deletedAt = DateTime.parse(json['deleted_at']).toLocal();
     createdAt = DateTime.parse(json['created_at']).toLocal();
     updatedAt = DateTime.parse(json['updated_at']).toLocal();
   }
@@ -52,7 +49,6 @@ class TransactionModel {
     data['fine'] = fine;
     data['return_date'] = returnDate?.toIso8601String();
     data['note'] = note;
-    data['deleted_at'] = deletedAt?.toIso8601String();
     data['created_at'] = createdAt?.toIso8601String();
     data['updated_at'] = updatedAt?.toIso8601String();
     return data;

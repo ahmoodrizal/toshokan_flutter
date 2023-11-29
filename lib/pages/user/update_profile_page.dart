@@ -122,13 +122,20 @@ class _UpdateProfilePageState extends ConsumerState<UpdateProfilePage> {
         child: ListView(
           padding: const EdgeInsets.all(30),
           children: [
-            Text(
-              'Please fill in the following form with the latest data that matches your identity',
-              style: AppFonts.darkTextStyle.copyWith(
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
+            Container(
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.amber),
+                borderRadius: BorderRadius.circular(6),
               ),
-              textAlign: TextAlign.center,
+              child: Text(
+                'Please fill in the following form with the latest data that matches your identity',
+                style: AppFonts.darkTextStyle.copyWith(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                ),
+                textAlign: TextAlign.justify,
+              ),
             ),
             Form(
               key: formKey,

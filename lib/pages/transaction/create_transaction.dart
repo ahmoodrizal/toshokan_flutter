@@ -57,7 +57,7 @@ class _CreateTransactiPageState extends ConsumerState<CreateTransactiPage> {
               break;
             case UnauthorizedFailure:
               newStatus = 'Unauthorized';
-              alert(context, 'Error', newStatus, ContentType.failure);
+              alert(context, 'Error', failure.message!, ContentType.failure);
               break;
             default:
               newStatus = 'Request Error';
@@ -78,12 +78,14 @@ class _CreateTransactiPageState extends ConsumerState<CreateTransactiPage> {
 
   @override
   Widget build(BuildContext context) {
+    // double height = MediaQuery.of(context).size.height;
     return Scaffold(
       body: SafeArea(
-        child: Padding(
+        child: SingleChildScrollView(
           padding: const EdgeInsets.all(30),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisSize: MainAxisSize.max,
             children: [
               Text(
                 'Create a Transaction',
@@ -284,7 +286,7 @@ class _CreateTransactiPageState extends ConsumerState<CreateTransactiPage> {
                   ),
                 ],
               ),
-              const Spacer(),
+              const Gap(60),
               Consumer(builder: (_, wiRef, __) {
                 String status = wiRef.watch(transactionStatusProvider);
                 if (status == 'loading') {
