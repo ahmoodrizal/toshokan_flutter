@@ -7,7 +7,7 @@ import 'package:toshokan/config/app_response.dart';
 import 'package:toshokan/config/app_sessions.dart';
 import 'package:toshokan/config/app_style.dart';
 import 'package:toshokan/models/user_model.dart';
-import 'package:toshokan/pages/profile_page.dart';
+import 'package:toshokan/pages/user/profile_page.dart';
 import 'package:toshokan/providers/update_profile_provider.dart';
 import 'package:toshokan/services/user_service.dart';
 import 'package:toshokan/widgets/alert.dart';

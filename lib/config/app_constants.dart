@@ -1,7 +1,10 @@
+// ignore_for_file: unused_field
+
 class AppConstants {
   static const appName = 'Toshokan';
 
-  static const _host = 'http://192.168.1.5:8000/api';
+  static const String _host = 'http://192.168.1.6:8000/api';
+  static const String hostImage = 'http://192.168.1.6:8000/storage';
 
   // Auth URL
   static const String authLoginUrl = '$_host/login';

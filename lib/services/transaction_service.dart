@@ -6,7 +6,7 @@ import 'package:toshokan/config/app_request.dart';
 import 'package:toshokan/config/app_response.dart';
 import 'package:toshokan/config/app_sessions.dart';
 
-class BookService {
+class TransactionService {
   static Future<Either<Failure, Map>> fetchMyTransactions() async {
     Uri url = Uri.parse(AppConstants.myTransactionUrl);
     final token = await AppSession.getBearerToken();

@@ -14,7 +14,6 @@ class BookModel {
   String? year;
   String? language;
   String? pageNumber;
-  DateTime? deletedAt;
   DateTime? createdAt;
   DateTime? updatedAt;
   AuthorModel? author;
@@ -33,7 +32,6 @@ class BookModel {
     this.year,
     this.language,
     this.pageNumber,
-    this.deletedAt,
     this.createdAt,
     this.updatedAt,
     this.author,
@@ -53,7 +51,6 @@ class BookModel {
     year = json['year'];
     language = json['language'];
     pageNumber = json['page_number'];
-    deletedAt = DateTime.parse(json['deleted_at']).toLocal();
     createdAt = DateTime.parse(json['created_at']).toLocal();
     updatedAt = DateTime.parse(json['updated_at']).toLocal();
     author = AuthorModel.fromJson(json['author']);
@@ -79,7 +76,6 @@ class BookModel {
     data['year'] = year;
     data['language'] = language;
     data['page_number'] = pageNumber;
-    data['deleted_at'] = deletedAt?.toIso8601String();
     data['created_at'] = createdAt?.toIso8601String();
     data['updated_at'] = updatedAt?.toIso8601String();
     data['author'] = author?.toJson();
