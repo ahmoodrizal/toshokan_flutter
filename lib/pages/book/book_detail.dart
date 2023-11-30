@@ -4,6 +4,7 @@ import 'package:toshokan/config/app_constants.dart';
 import 'package:toshokan/config/app_navigation.dart';
 import 'package:toshokan/config/app_style.dart';
 import 'package:toshokan/models/book_model.dart';
+import 'package:toshokan/models/category_model.dart';
 import 'package:toshokan/pages/transaction/create_transaction.dart';
 import 'package:toshokan/widgets/info_line.dart';
 
@@ -35,6 +36,32 @@ class BookDetail extends StatelessWidget {
               book.title!.toUpperCase(),
               style: AppFonts.darkTextStyle.copyWith(fontSize: 18, fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,
+            ),
+            const Gap(10),
+            SizedBox(
+              height: 30,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: book.categories!.length,
+                itemBuilder: (context, index) {
+                  CategoryModel item = book.categories![index];
+                  return Container(
+                    margin: const EdgeInsets.only(right: 10),
+                    alignment: Alignment.center,
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(6),
+                      color: Colors.amber,
+                    ),
+                    child: Text(
+                      item.name!,
+                      style: AppFonts.darkTextStyle.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  );
+                },
+              ),
             ),
             const Gap(10),
             Text(

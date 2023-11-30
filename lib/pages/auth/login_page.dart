@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -63,7 +65,8 @@ class _LoginPageState extends ConsumerState<LoginPage> {
               break;
             case UnauthorizedFailure:
               newStatus = 'Unauthorized';
-              alert(context, 'Error', newStatus, ContentType.failure);
+              var info = jsonDecode(failure.message!) as Map<String, dynamic>;
+              alert(context, 'Error', info['message'], ContentType.failure);
               break;
             default:
               newStatus = 'Request Error';
