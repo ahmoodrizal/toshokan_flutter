@@ -107,4 +107,22 @@ class UserService {
       return left(FetchFailure(e.toString()));
     }
   }
+
+  static Future<Either<Failure, Map>> detail() async {
+    Uri url = Uri.parse(AppConstants.userDetailUrl);
+    final token = await AppSession.getBearerToken();
+    try {
+      final response = await http.get(
+        url,
+        headers: AppRequest.header(token),
+      );
+      final data = AppResponse.data(response);
+      return Right(data);
+    } catch (e) {
+      if (e is Failure) {
+        return left(e);
+      }
+      return left(FetchFailure(e.toString()));
+    }
+  }
 }

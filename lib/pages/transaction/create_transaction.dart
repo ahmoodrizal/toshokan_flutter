@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -57,7 +59,8 @@ class _CreateTransactiPageState extends ConsumerState<CreateTransactiPage> {
               break;
             case UnauthorizedFailure:
               newStatus = 'Unauthorized';
-              alert(context, 'Error', failure.message!, ContentType.failure);
+              var message = jsonDecode(failure.message!) as Map<String, dynamic>;
+              alert(context, 'Error', message['message'], ContentType.failure);
               break;
             default:
               newStatus = 'Request Error';

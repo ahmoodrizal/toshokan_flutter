@@ -117,7 +117,7 @@ class _UserTransactionPageState extends ConsumerState<UserTransactionPage> {
                     color: thx.status == 'late'
                         ? Colors.red[200]!
                         : thx.status == 'done'
-                            ? Colors.green[200]!
+                            ? Colors.green[100]!
                             : Colors.amber[200]!,
                     borderRadius: BorderRadius.circular(6),
                   ),
@@ -136,8 +136,16 @@ class _UserTransactionPageState extends ConsumerState<UserTransactionPage> {
                       const Gap(10),
                       Text(
                         'Return Date : ${AppFormat.shortDate(thx.returnDate)}',
-                        style: AppFonts.darkTextStyle,
+                        style: AppFonts.darkTextStyle.copyWith(
+                          decoration: thx.status == 'done' ? TextDecoration.lineThrough : TextDecoration.none,
+                        ),
                       ),
+                      if (thx.fine != null) Gap(10),
+                      if (thx.fine != null)
+                        Text(
+                          'Fine : Rp. ${thx.fine}',
+                          style: AppFonts.darkTextStyle,
+                        ),
                     ],
                   ),
                 ),

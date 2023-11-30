@@ -6,6 +6,7 @@ import 'package:toshokan/config/app_navigation.dart';
 import 'package:toshokan/config/app_style.dart';
 import 'package:toshokan/models/book_model.dart';
 import 'package:toshokan/pages/book/book_detail.dart';
+import 'package:toshokan/pages/book/search_book_page.dart';
 import 'package:toshokan/pages/user/profile_page.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:toshokan/providers/home_provider.dart';
@@ -19,8 +20,15 @@ class HomePage extends ConsumerStatefulWidget {
 }
 
 class _HomePageState extends ConsumerState<HomePage> {
+  static final searchController = TextEditingController();
+
+  goToSearchPage() {
+    Navo.push(context, SearchBookPage(query: searchController.text));
+  }
+
   refresh() {
     getPopularBooks();
+    getlatestBooks();
   }
 
   getPopularBooks() {
@@ -58,21 +66,151 @@ class _HomePageState extends ConsumerState<HomePage> {
     });
   }
 
+  getlatestBooks() {
+    BookService.fetchLatestBooks().then((value) {
+      value.fold(
+        (failure) {
+          switch (failure.runtimeType) {
+            case ServerFailure:
+              setLatestBookStatus(ref, 'Server Error');
+              break;
+            case NotFoundFailure:
+              setLatestBookStatus(ref, 'Error not found');
+              break;
+            case ForbiddenFailure:
+              setLatestBookStatus(ref, 'You don\'t have an access');
+              break;
+            case BadRequestFailure:
+              setLatestBookStatus(ref, 'Bad request');
+              break;
+            case UnauthorizedFailure:
+              setLatestBookStatus(ref, 'Unauthorized');
+              break;
+            default:
+              setLatestBookStatus(ref, 'Request Error');
+              break;
+          }
+        },
+        (result) {
+          setLatestBookStatus(ref, 'Success');
+          List data = result['data'];
+          List<BookModel> books = data.map((e) => BookModel.fromJson(e)).toList();
+          ref.read(latestBooksListProvider.notifier).setData(books);
+        },
+      );
+    });
+  }
+
   @override
   void initState() {
-    getPopularBooks();
+    refresh();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: ListView(
+      body: RefreshIndicator(
+        onRefresh: () async => refresh(),
+        child: SafeArea(
+          child: ListView(
+            children: [
+              header(context),
+              searchBar(),
+              popularBooks(),
+              latestBooks(),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Consumer latestBooks() {
+    return Consumer(builder: (_, wiRef, __) {
+      List<BookModel> latestBooks = wiRef.watch(latestBooksListProvider);
+      return Column(
+        children: [
+          const Gap(30),
+          Text(
+            'Latest Books',
+            style: AppFonts.darkTextStyle.copyWith(
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
+            ),
+          ),
+          if (latestBooks.isEmpty)
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 30),
+              child: Center(
+                child: Text(
+                  'Popular Books Data Not Found',
+                  style: AppFonts.darkTextStyle.copyWith(fontSize: 16),
+                ),
+              ),
+            ),
+          if (latestBooks.isNotEmpty)
+            Padding(
+              padding: const EdgeInsets.fromLTRB(30, 15, 30, 30),
+              child: GridView.builder(
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                    maxCrossAxisExtent: 200,
+                    childAspectRatio: 2 / 3,
+                    crossAxisSpacing: 20,
+                    mainAxisSpacing: 20,
+                  ),
+                  itemCount: latestBooks.length,
+                  itemBuilder: (BuildContext ctx, index) {
+                    BookModel latestItem = latestBooks[index];
+                    return GestureDetector(
+                      onTap: () => Navo.push(context, BookDetail(book: latestItem)),
+                      child: Container(
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          color: Colors.grey[200]!,
+                          image: DecorationImage(
+                            image: NetworkImage('${AppConstants.hostImage}/books/${latestItem.cover}'),
+                            fit: BoxFit.cover,
+                          ),
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                      ),
+                    );
+                  }),
+            ),
+        ],
+      );
+    });
+  }
+
+  Padding searchBar() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 30),
+      child: Container(
+        padding: const EdgeInsets.all(2),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(6),
+          border: Border.all(color: Colors.amber[700]!),
+        ),
+        child: Row(
           children: [
-            header(context),
-            vider(),
-            popularBooks(),
+            IconButton(
+              onPressed: () => goToSearchPage(),
+              icon: Icon(
+                Icons.search,
+                color: AppColors.primaryColor,
+              ),
+            ),
+            Expanded(
+              child: TextField(
+                controller: searchController,
+                decoration: const InputDecoration.collapsed(
+                  hintText: 'harry potter . . .',
+                ),
+              ),
+            ),
           ],
         ),
       ),
@@ -127,6 +265,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                       ),
                       width: 150,
                       decoration: BoxDecoration(
+                        color: Colors.grey[200]!,
                         borderRadius: BorderRadius.circular(8),
                         image: DecorationImage(
                           image: NetworkImage('${AppConstants.hostImage}/books/${popularItem.cover}'),
@@ -189,6 +328,11 @@ class _HomePageState extends ConsumerState<HomePage> {
                 child: CircleAvatar(
                   radius: 22,
                   backgroundColor: AppColors.primaryColor,
+                  child: (const Icon(
+                    Icons.account_circle,
+                    color: Colors.white,
+                    size: 35,
+                  )),
                 ),
               )
             ],

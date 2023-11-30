@@ -11,6 +11,7 @@ class AppConstants {
   static const String authRegisterUrl = '$_host/register';
   static const String authLogoutUrl = '$_host/logout';
   static const String updateProfileUrl = '$_host/update';
+  static const String userDetailUrl = '$_host/user';
 
   // Book URL
   static const String latestBookUrl = '$_host/latest-books';
