@@ -3,8 +3,8 @@
 class AppConstants {
   static const appName = 'Toshokan';
 
-  static const String _host = 'http://192.168.1.8:8000/api';
-  static const String hostImage = 'http://192.168.1.8:8000/storage';
+  static const String _host = 'https://toshokan.ahmoodrizal.my.id/api';
+  static const String hostImage = 'https://toshokan.ahmoodrizal.my.id/storage';
 
   // Auth URL
   static const String authLoginUrl = '$_host/login';
